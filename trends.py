@@ -1,8 +1,18 @@
-from pytrends.request import TrendReq
+import requests
+import xml.etree.ElementTree as ET
 
 def get_trending_keywords():
-    pytrends = TrendReq(hl='en-US', tz=360)
+    url = "https://trends.google.com/trends/trendingsearches/daily/rss?geo=US"
 
-    df = pytrends.trending_searches(pn='united_states')
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
 
-    return df[0].tolist()[:10]
+    root = ET.fromstring(response.content)
+
+    keywords = []
+
+    for item in root.findall(".//item"):
+        title = item.find("title").text
+        keywords.append(title)
+
+    return keywords[:10]
