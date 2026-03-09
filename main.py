@@ -1,3 +1,7 @@
+import os
+print("BLOGGER_TOKEN:", os.getenv("BLOGGER_TOKEN"))
+
+
 from trends import get_trending_keywords
 from news import get_news
 from rewrite import rewrite_article
@@ -29,5 +33,6 @@ for keyword in keywords:
     )
 
 create_pdf(articles_pdf)
+
 
 send_pdf()
