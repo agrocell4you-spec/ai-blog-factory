@@ -1,11 +1,8 @@
 from pytrends.request import TrendReq
 
 def get_trending_keywords():
+    pytrends = TrendReq(hl='en-US', tz=360)
 
-    pytrends = TrendReq()
+    df = pytrends.trending_searches(pn='united_states')
 
-    trends = pytrends.trending_searches(pn='united_states')
-
-    keywords = trends[0].tolist()
-
-    return keywords[:20]
+    return df[0].tolist()
