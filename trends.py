@@ -2,10 +2,8 @@ import feedparser
 
 def get_trending_keywords():
     # 1. 경향신문 전체기사 RSS (한글 블로그용)
-    rss_url = "https://www.khan.co.kr"
+    rss_url = "https://www.khan.co.kr/rss/rssdata/total_news.xml"
     
-    # 2. 만약 뉴욕타임즈(영어)를 원하시면 아래 주소로 바꾸세요.
-    # rss_url = "https://www.khan.co.kr/rss/rssdata/total_news.xml"
 
     try:
         # RSS 주소에서 뉴스 정보를 읽어옵니다.
@@ -31,3 +29,4 @@ def get_trending_keywords():
 if __name__ == "__main__":
     # 테스트 실행
     print(get_trending_keywords())
+
