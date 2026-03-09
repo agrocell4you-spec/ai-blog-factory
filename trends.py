@@ -1,9 +1,10 @@
 from pytrends.request import TrendReq
 
 def get_trending_keywords():
-    pytrends = TrendReq(hl='en-US', tz=360)
+    pytrends = TrendReq()
 
-    df = pytrends.trending_searches(pn='south_korea')
+    df = pytrends.realtime_trending_searches(pn='US')
 
-    return df[0].tolist()
+    return df["title"].tolist()
+
 
