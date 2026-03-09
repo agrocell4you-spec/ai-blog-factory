@@ -2,7 +2,7 @@ import feedparser
 
 def get_trending_keywords():
     # 1. 경향신문 전체기사 RSS (한글 블로그용)
-    rss_url = "https://www.khan.co.kr/rss/rssdata/total_news.xml"
+    rss_url = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
     
 
     try:
@@ -29,4 +29,5 @@ def get_trending_keywords():
 if __name__ == "__main__":
     # 테스트 실행
     print(get_trending_keywords())
+
 
