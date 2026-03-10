@@ -1,5 +1,0 @@
-pytrends
-feedparser
-openai
-reportlab
-requests
