@@ -9,6 +9,7 @@ RSS_FEEDS = [
 
     # Google News 한국 뉴스
     "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko",
+    "https://news.google.com/rss/search?q=ai&hl=ko&gl=KR&ceid=KR:ko",
 
     # 기술 뉴스
     # "https://news.google.com/rss/search?q=technology",
