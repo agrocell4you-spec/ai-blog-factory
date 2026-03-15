@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>토토번호 추천 프로그램</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 15px;
+        }
+        
+        .input-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            padding-left: 5px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102,126,234,0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #f8f9ff;
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecf3 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .result-title {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .numbers {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .number-ball {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(102,126,234,0.4);
+            animation: popIn 0.3s ease;
+        }
+        
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        
+        .result-full {
+            margin-top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            letter-spacing: 2px;
+        }
+        
+        .calendar-save {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px dashed #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .calendar-save span {
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .btn-small {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-small:hover {
+            background: #764ba2;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        /* 다크모드 지원 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+            
+            .container {
+                background: #1e1e2f;
+            }
+            
+            label {
+                color: #fff;
+            }
+            
+            select, input {
+                background: #2d2d44;
+                border-color: #3d3d5c;
+                color: white;
+            }
+            
+            select option {
+                background: #2d2d44;
+                color: white;
+            }
+            
+            .result-box {
+                background: #2d2d44;
+            }
+            
+            .result-title {
+                color: #ccc;
+            }
+            
+            .result-full {
+                color: white;
+            }
+            
+            .calendar-save {
+                background: #2d2d44;
+                border-color: #667eea;
+            }
+            
+            .calendar-save span {
+                color: white;
+            }
+            
+            .footer {
+                color: #999;
+                border-top-color: #3d3d5c;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 토토번호 추천</h1>
+            <p>4가지 방식으로 행운의 번호를 찾아보세요</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-group">
+                <label for="method">번호 추출 방식 선택</label>
+                <select id="method" onchange="updateInputField()">
+                    <option value="random">🎲 랜덤 (날짜/시간 조합)</option>
+                    <option value="mbti">🧠 MBTI 성격유형</option>
+                    <option value="biorhythm">📊 바이오리듬</option>
+                    <option value="statistical">📈 통계분석</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="inputValue" id="inputLabel">입력값</label>
+                <input type="text" id="inputValue" placeholder="값을 입력하세요">
+                <div class="input-info" id="inputInfo"></div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="generateNumbers()">🔮 번호생성</button>
+                <button class="btn btn-secondary" onclick="resetFields()">🔄 초기화</button>
+            </div>
+            
+            <div class="result-box" id="resultBox" style="display: none;">
+                <div class="result-title">추천된 행운의 번호</div>
+                <div class="numbers" id="numberBalls"></div>
+                <div class="result-full" id="fullNumbers"></div>
+            </div>
+            
+            <div class="calendar-save" id="calendarSection" style="display: none;">
+                <span>📅 캘린더에 저장하기</span>
+                <button class="btn-small" onclick="saveToCalendar()">💾 저장</button>
+            </div>
+            
+            <div class="footer">
+                ⓒ 2024 토토번호 추천 프로그램 v1.0
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 현재 선택된 번호 저장
+        let currentNumbers = [];
+        let selectedMethod = 'random';
+        
+        // MBTI 유형별 번호 데이터베이스 (실제로는 더 다양한 조합 가능)
+        const mbtiNumbers = {
+            'ISTP': [3, 12, 21, 30, 39, 45],
+            'ISTJ': [1, 8, 15, 22, 29, 36],
+            'ISFP': [4, 13, 20, 28, 35, 42],
+            'ISFJ': [2, 9, 16, 23, 31, 40],
+            'INTP': [5, 14, 19, 26, 34, 43],
+            'INTJ': [6, 11, 18, 25, 33, 41],
+            'INFP': [7, 10, 17, 24, 32, 38],
+            'INFJ': [1, 7, 13, 19, 25, 31],
+            'ESTP': [8, 16, 24, 32, 40, 45],
+            'ESTJ': [3, 11, 19, 27, 35, 43],
+            'ESFP': [5, 12, 20, 28, 36, 44],
+            'ESFJ': [2, 10, 18, 26, 34, 42],
+            'ENTP': [4, 15, 23, 29, 37, 41],
+            'ENTJ': [6, 14, 22, 30, 38, 45],
+            'ENFP': [9, 17, 25, 33, 39, 44],
+            'ENFJ': [1, 9, 18, 27, 36, 45]
+        };
+        
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            updateInputField();
+            document.getElementById('inputValue').value = getDefaultValue('random');
+        };
+        
+        // 입력 필드 업데이트
+        function updateInputField() {
+            const method = document.getElementById('method').value;
+            selectedMethod = method;
+            const inputField = document.getElementById('inputValue');
+            const inputLabel = document.getElementById('inputLabel');
+            const inputInfo = document.getElementById('inputInfo');
+            
+            switch(method) {
+                case 'random':
+                    inputLabel.textContent = '📅 날짜/시간';
+                    inputField.value = getCurrentDateTime();
+                    inputField.readOnly = true;
+                    inputInfo.textContent = '현재 날짜와 시간이 자동으로 사용됩니다';
+                    break;
+                    
+                case 'mbti':
+                    inputLabel.textContent = '🧠 MBTI 유형';
+                    inputField.value = 'ISTP';
+                    inputField.readOnly = false;
+                    inputField.maxLength = 4;
+                    inputInfo.textContent = '예: ISTP, ENFJ, INTJ 등 4글자로 입력';
+                    break;
+                    
+                case 'biorhythm':
+                    inputLabel.textContent = '📅 생년월일';
+                    inputField.value = '1990-01-01';
+                    inputField.type = 'date';
+                    inputField.readOnly = false;
+                    inputInfo.textContent = '생년월일을 선택하세요';
+                    break;
+                    
+                case 'statistical':
+                    inputLabel.textContent = '📊 통계 기준';
+                    inputField.value = '최근 6개월 통계';
+                    inputField.readOnly = true;
+                    inputInfo.textContent = '최신 통계 데이터 기반';
+                    break;
+            }
+        }
+        
+        // 현재 날짜시간 문자열 반환
+        function getCurrentDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+        
+        // 기본값 반환
+        function getDefaultValue(method) {
+            switch(method) {
+                case 'random': return getCurrentDateTime();
+                case 'mbti': return 'ISTP';
+                case 'biorhythm': return '1990-01-01';
+                case 'statistical': return '최근 6개월 통계';
+                default: return '';
+            }
+        }
+        
+        // 번호 생성
+        function generateNumbers() {
+            const method = document.getElementById('method').value;
+            const inputValue = document.getElementById('inputValue').value;
+            
+            let numbers = [];
+            
+            switch(method) {
+                case 'random':
+                    numbers = generateRandomNumbers(inputValue);
+                    break;
+                case 'mbti':
+                    numbers = generateMBTINumbers(inputValue.toUpperCase());
+                    break;
+                case 'biorhythm':
+                    numbers = generateBiorhythmNumbers(inputValue);
+                    break;
+                case 'statistical':
+                    numbers = generateStatisticalNumbers();
+                    break;
+            }
+            
+            // 중복 제거 및 정렬
+            numbers = removeDuplicatesAndSort(numbers);
+            
+            // 결과 저장
+            currentNumbers = numbers;
+            
+            // 화면 표시
+            displayNumbers(numbers);
+            
+            // 캘린더 섹션 표시
+            document.getElementById('calendarSection').style.display = 'flex';
+        }
+        
+        // 랜덤 번호 생성
+        function generateRandomNumbers(seed) {
+            let numbers = [];
+            const used = new Array(46).fill(false);
+            
+            // 시드 기반 랜덤 생성
+            let seedNum = 0;
+            for(let i = 0; i < seed.length; i++) {
+                seedNum += seed.charCodeAt(i);
+            }
+            
+            function seededRandom() {
+                seedNum = (seedNum * 9301 + 49297) % 233280;
+                return seedNum / 233280;
+            }
+            
+            for(let i = 0; i < 6; i++) {
+                let num;
+                do {
+                    num = Math.floor(seededRandom() * 45) + 1;
+                } while(used[num]);
+                used[num] = true;
+                numbers.push(num);
+            }
+            
+            return numbers;
+        }
+        
+        // MBTI 번호 생성
+        function generateMBTINumbers(mbti) {
+            // 유효한 MBTI인지 확인
+            const validMBTI = mbtiNumbers[mbti] ? mbti : 'ISTP';
+            return [...mbtiNumbers[validMBTI]];
+        }
+        
+        // 바이오리듬 번호 생성
+        function generateBiorhythmNumbers(birthDate) {
+            const birth = new Date(birthDate);
+            const today = new Date();
+            const days = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
+            
+            // 바이오리듬 계산
+            const physical = Math.sin(2 * Math.PI * days / 23);
+            const emotional = Math.sin(2 * Math.PI * days / 28);
+            const intellectual = Math.sin(2 * Math.PI * days / 33);
+            
+            let numbers = [
+                Math.floor(Math.abs(physical) * 44) + 1,
+                Math.floor(Math.abs(emotional) * 44) + 1,
+                Math.floor(Math.abs(intellectual) * 44) + 1,
+                Math.floor(Math.abs(physical + emotional) * 22) + 1,
+                Math.floor(Math.abs(emotional + intellectual) * 22) + 1,
+                Math.floor(Math.abs(physical + intellectual) * 22) + 1
+            ];
+            
+            return numbers;
+        }
+        
+        // 통계분석 번호 생성
+        function generateStatisticalNumbers() {
+            // 자주 나오는 번호 통계 (예시)
+            const frequentNumbers = [1, 12, 14, 21, 27, 34, 36, 42, 43, 45];
+            let numbers = [];
+            const used = new Array(46).fill(false);
+            
+            for(let i = 0; i < 6; i++) {
+                let num;
+                do {
+                    num = frequentNumbers[Math.floor(Math.random() * frequentNumbers.length)];
+                } while(used[num]);
+                used[num] = true;
+                numbers.push(num);
+            }
+            
+            return numbers;
+        }
+        
+        // 중복 제거 및 정렬
+        function removeDuplicatesAndSort(numbers) {
+            const unique = [...new Set(numbers)];
+            
+            // 6개가 될 때까지 랜덤 번호 추가
+            while(unique.length < 6) {
+                const newNum = Math.floor(Math.random() * 45) + 1;
+                if(!unique.includes(newNum)) {
+                    unique.push(newNum);
+                }
+            }
+            
+            // 6개로 자르고 정렬
+            return unique.slice(0, 6).sort((a, b) => a - b);
+        }
+        
+        // 번호 화면 표시
+        function displayNumbers(numbers) {
+            const resultBox = document.getElementById('resultBox');
+            const numberBalls = document.getElementById('numberBalls');
+            const fullNumbers = document.getElementById('fullNumbers');
+            
+            // 숫자 볼 생성
+            numberBalls.innerHTML = '';
+            numbers.forEach(num => {
+                const ball = document.createElement('div');
+                ball.className = 'number-ball';
+                ball.textContent = String(num).padStart(2, '0');
+                numberBalls.appendChild(ball);
+            });
+            
+            // 전체 숫자 표시
+            fullNumbers.textContent = numbers.map(n => String(n).padStart(2, '0')).join(' - ');
+            
+            // 결과 박스 표시
+            resultBox.style.display = 'block';
+        }
+        
+        // 초기화
+        function resetFields() {
+            document.getElementById('method').value = 'random';
+            document.getElementById('resultBox').style.display = 'none';
+            document.getElementById('calendarSection').style.display = 'none';
+            currentNumbers = [];
+            updateInputField();
+        }
+        
+        // 캘린더에 저장
+        function saveToCalendar() {
+            if(currentNumbers.length === 0) {
+                showToast('먼저 번호를 생성해주세요!');
+                return;
+            }
+            
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const numbersStr = currentNumbers.map(n => String(n).padStart(2, '0')).join('-');
+            const eventTitle = `로또 추천번호 ${numbersStr}`;
+            
+            // 캘린더 저장 시뮬레이션 (실제로는 웹 API나 로컬 스토리지 사용)
+            const savedEvents = JSON.parse(localStorage.getItem('lottoEvents') || '[]');
+            savedEvents.push({
+                title: eventTitle,
+                date: now.toISOString(),
+                numbers: currentNumbers
+            });
+            localStorage.setItem('lottoEvents', JSON.stringify(savedEvents));
+            
+            showToast(`✅ 캘린더에 저장되었습니다!\n${eventTitle}`);
+            
+            // 구글 캘린더 연동 (선택사항)
+            if(confirm('구글 캘린더에도 추가하시겠습니까?')) {
+                window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${now.toISOString().replace(/-|:|\.\d+/g, '')}/${now.toISOString().replace(/-|:|\.\d+/g, '')}`, '_blank');
+            }
+        }
+        
+        // 토스트 메시지 표시
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // 저장된 이벤트 보기
+        function viewSavedEvents() {
+            const events = JSON.parse(localStorage.getItem('lottoEvents') || '[]');
+            if(events.length === 0) {
+                showToast('저장된 이벤트가 없습니다.');
+                return;
+            }
+            
+            let message = '📅 저장된 이벤트:\n';
+            events.slice(-5).reverse().forEach(e => {
+                message += `\n• ${e.title}`;
+            });
+            
+            showToast(message);
+        }
+        
+        // 키보드 이벤트 (엔터키로 번호 생성)
+        document.addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                generateNumbers();
+            }
+        });
+        
+        // 터치 최적화
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
